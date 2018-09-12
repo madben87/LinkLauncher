@@ -1,4 +1,6 @@
 package ben.com.linklauncher.ui.test;
 
-public interface TestView {
+import ben.com.linklauncher.core.MVPView;
+
+public interface TestView extends MVPView {
 }

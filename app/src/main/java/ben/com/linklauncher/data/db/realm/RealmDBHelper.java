@@ -1,81 +1,121 @@
 package ben.com.linklauncher.data.db.realm;
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
+import java.util.List;
+
+import ben.com.linklauncher.data.model.LinkModel;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class RealmDBHelper {
 
     @SuppressLint("StaticFieldLeak")
     private static Realm realm;
 
-    /*public static Word addWord(final Word item) {
-        wordRealm = Realm.getDefaultInstance();
+    private static LinkModel result;
+    private static boolean status;
 
-        if (wordRealm != null) {
-            wordRealm.executeTransaction(new Realm.Transaction() {
+    public static List<LinkModel> getLinksList() {
+
+        realm = Realm.getDefaultInstance();
+
+        List<LinkModel> resList = new RealmList<>();
+
+        if (realm != null) {
+
+            RealmResults<LinkModel> results = realm.where(LinkModel.class).findAll();
+
+            resList = realm.copyFromRealm(results);
+
+        }
+        return resList;
+    }
+
+    public static LinkModel getLink(long id) {
+
+        realm = Realm.getDefaultInstance();
+
+        result = null;
+
+        if (realm != null) {
+            result = realm.where(LinkModel.class).equalTo("id", id).findFirst();
+
+            realm.close();
+        }
+
+        return result;
+    }
+
+    public static LinkModel addLink(final LinkModel model) {
+
+        realm = Realm.getDefaultInstance();
+
+        result = null;
+
+        if (realm != null) {
+            realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
 
-                    List<Translate> savedTranslates = new RealmList<>();
-
-                    if (item.getTranslates() != null && item.getTranslates().size() > 0) {
-                        for (Translate elem : item.getTranslates()) {
-                            elem.setId(KeyGenerator.generateKey(item.getValue(), elem.getValue()));
-                            savedTranslates.add(realm.copyToRealmOrUpdate(elem));
-                        }
-                    }
-
-                    if (item != null && !item.getValue().isEmpty() && !item.getPartsOfSpeech().isEmpty()) {
-
-                        long id = KeyGenerator.generateKey(item.getPartsOfSpeech(), item.getValue());
-
-                        Word w = wordRealm.where(Word.class).equalTo("id", id).findFirst();
-
-                        if (w != null) {
-                            for (Translate elem : savedTranslates) {
-                                w.addTranslate(elem);
-                            }
-                            wordRes = realm.copyToRealmOrUpdate(w);
-                        }else {
-                            item.setId(KeyGenerator.generateKey(item.getPartsOfSpeech(), item.getValue()));
-                            wordRes = realm.copyToRealmOrUpdate(item);
-                        }
+                    if (model != null) {
+                        result = realm.copyToRealmOrUpdate(model);
                     }
                 }
             });
 
-            wordRealm.close();
+            realm.close();
         }
 
-        return wordRes;
+        return result;
     }
 
-    public static Word getWord(long id) {
-        wordRealm = Realm.getDefaultInstance();
+    public static LinkModel updateLink(final LinkModel model) {
 
-        if (wordRealm != null) {
-            wordRes = wordRealm.where(Word.class).equalTo("id", id).findFirst();
+        realm = Realm.getDefaultInstance();
 
-            wordRealm.close();
+        result = null;
+
+        if (realm != null) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(@NonNull Realm realm) {
+
+                    LinkModel lm = realm.where(LinkModel.class).equalTo("id", model.getId()).findFirst();
+
+                    if (lm != null) {
+                        lm.setStatus(model.getStatus());
+
+                        result = realm.copyToRealmOrUpdate(lm);
+                    }
+                }
+            });
+
+            realm.close();
         }
 
-        return wordRes;
+        return result;
     }
 
-    public static List<Word> getWordsList() {
-        wordRealm = Realm.getDefaultInstance();
-        List<Word> resList = new RealmList<>();
+    public static boolean deleteLink(final LinkModel model) {
 
-        if (wordRealm != null) {
+        realm = Realm.getDefaultInstance();
 
-            RealmResults<Word> results = wordRealm.where(Word.class).findAll();
+        if (realm != null) {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(@NonNull Realm realm) {
 
-            resList = wordRealm.copyFromRealm(results);
+                    RealmResults<LinkModel> realmResults = realm.where(LinkModel.class).equalTo("id", model.getId()).findAll();
+                    status = realmResults.deleteAllFromRealm();
+                }
+            });
 
-            //wordRealm.close();
+            realm.close();
         }
-        return resList;
-    }*/
+
+        return status;
+    }
 }

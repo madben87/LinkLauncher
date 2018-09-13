@@ -28,6 +28,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
+
+        <provider
+            android:name=".data.provider.LinkContentProvider"
+            android:authorities="ben.com.linklauncher.linkprovider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

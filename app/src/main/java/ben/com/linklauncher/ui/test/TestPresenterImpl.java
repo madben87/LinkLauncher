@@ -16,8 +16,6 @@ public class TestPresenterImpl implements TestPresenter<TestView> {
 
     @Inject
     Context context;
-    @Inject
-    Repository repository;
 
     private TestView view;
 

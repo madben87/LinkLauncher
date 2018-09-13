@@ -14,9 +14,9 @@ public interface Repository<D> {
 
     void addList(List<D> list);
 
-    void updateItem(D d);
+    Observable<D> updateItem(D d);
 
     void updateList(List<D> list);
 
-    void removeItem(long id);
+    Observable<Boolean> removeItem(D d);
 }

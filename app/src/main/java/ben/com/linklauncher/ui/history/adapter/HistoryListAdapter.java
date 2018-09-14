@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import ben.com.linklauncher.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ben.com.linklauncher.core.ItemClick;
@@ -17,8 +18,13 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
 
     private List<LinkModel> linkModelList;
 
+    public HistoryListAdapter() {
+        linkModelList = new ArrayList<>();
+    }
+
     public void addItems(List<LinkModel> list) {
         this.linkModelList = list;
+        notifyDataSetChanged();
     }
 
     @NonNull

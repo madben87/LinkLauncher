@@ -13,7 +13,7 @@ public class RepositoryModule {
 
     @Provides
     @Singleton
-    Repository providesWordRepository() {
+    Repository providesRepository() {
         return new RealmRepositoryImpl();
     }
 }

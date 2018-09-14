@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import java.util.List;
+import java.util.Objects;
 
 import ben.com.linklauncher.data.model.LinkModel;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 public class RealmDBHelper {
@@ -41,7 +43,11 @@ public class RealmDBHelper {
         result = null;
 
         if (realm != null) {
-            result = realm.where(LinkModel.class).equalTo("id", id).findFirst();
+            //result = realm.where(LinkModel.class).equalTo("id", id).findFirst();
+            LinkModel model = realm.where(LinkModel.class).equalTo("id", id).findFirst();
+            if (model != null) {
+                result = realm.copyFromRealm(model);
+            }
 
             realm.close();
         }
@@ -58,10 +64,10 @@ public class RealmDBHelper {
         if (realm != null) {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
 
                     if (model != null) {
-                        result = realm.copyToRealmOrUpdate(model);
+                        result = realm.copyFromRealm(realm.copyToRealmOrUpdate(model));
                     }
                 }
             });
@@ -88,7 +94,7 @@ public class RealmDBHelper {
                     if (lm != null) {
                         lm.setStatus(model.getStatus());
 
-                        result = realm.copyToRealmOrUpdate(lm);
+                        result = realm.copyFromRealm(realm.copyToRealmOrUpdate(lm));
                     }
                 }
             });
@@ -101,7 +107,7 @@ public class RealmDBHelper {
 
     public static boolean deleteLink(final LinkModel model) {
 
-        realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getDefaultInstance();
 
         if (realm != null) {
             realm.executeTransaction(new Realm.Transaction() {

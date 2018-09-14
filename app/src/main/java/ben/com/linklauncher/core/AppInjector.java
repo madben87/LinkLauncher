@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import ben.com.linklauncher.data.provider.LinkContentProvider;
 import ben.com.linklauncher.modules.ContextModule;
 import ben.com.linklauncher.modules.RepositoryModule;
+import ben.com.linklauncher.ui.history.HistoryPresenterImpl;
 import ben.com.linklauncher.ui.test.TestPresenterImpl;
 import dagger.Component;
 
@@ -12,6 +13,6 @@ import dagger.Component;
 @Component(modules = {ContextModule.class, RepositoryModule.class})
 public interface AppInjector {
 
-    //void inject(LinkContentProvider provider);
+    void inject(HistoryPresenterImpl presenter);
     void inject(TestPresenterImpl presenter);
 }

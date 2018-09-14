@@ -34,12 +34,12 @@ public class TestPresenterImpl implements TestPresenter<TestView> {
     }
 
     @Override
-    public void attachPresenter(TestView testView) {
+    public void attachView(TestView testView) {
         this.view = testView;
     }
 
     @Override
-    public void detachPresenter() {
+    public void detachView() {
         view = null;
     }
 }

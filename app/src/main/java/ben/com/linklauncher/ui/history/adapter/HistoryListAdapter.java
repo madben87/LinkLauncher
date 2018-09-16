@@ -10,16 +10,26 @@ import ben.com.linklauncher.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import javax.inject.Inject;
+
+import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.core.ItemClick;
 import ben.com.linklauncher.data.model.LinkModel;
+import ben.com.linklauncher.ui.history.HistoryPresenter;
+import ben.com.linklauncher.util.LinkUtil;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
+
+    @Inject
+    HistoryPresenter presenter;
 
     private List<LinkModel> linkModelList;
 
     public HistoryListAdapter() {
         linkModelList = new ArrayList<>();
+        App.getScreenInjector().inject(this);
     }
 
     public void addItems(List<LinkModel> list) {
@@ -35,9 +45,9 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HistoryHolder holder, int i) {
+    public void onBindViewHolder(@NonNull final HistoryHolder holder, int i) {
 
-        LinkModel model = linkModelList.get(i);
+        final LinkModel model = linkModelList.get(i);
 
         if (model != null) {
 
@@ -48,7 +58,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
             holder.setOnItemClickListener(new ItemClick() {
                 @Override
                 public void onItemClick(View view, int position) {
-
+                    presenter.sendLink(model);
                 }
             });
         }

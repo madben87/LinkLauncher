@@ -11,6 +11,7 @@ import io.realm.RealmConfiguration;
 public class App extends Application {
 
     public static String SHOW_LINK = "ben.com.linklauncher.show_link";
+    public static String SHOW_HISTORY_LINK = "ben.com.linklauncher.show_history_link";
     public static String SHOW_LINK_SUCCESS = "ben.com.linklauncher.show_link_success";
     public static String KEY_LINK = "link";
 

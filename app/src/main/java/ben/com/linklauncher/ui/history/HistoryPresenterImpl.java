@@ -1,6 +1,11 @@
 package ben.com.linklauncher.ui.history;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -8,6 +13,7 @@ import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.data.db.Repository;
 import ben.com.linklauncher.data.db.realm.RealmRepository;
 import ben.com.linklauncher.data.model.LinkModel;
+import ben.com.linklauncher.util.LinkUtil;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -20,6 +26,8 @@ public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
 
     @Inject
     Repository repository;
+    @Inject
+    Context context;
 
     private CompositeDisposable disposable;
 
@@ -39,7 +47,7 @@ public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
         disposable.clear();
     }
 
-    @Override
+    /*@Override
     public void updateList() {
         disposable.add((Disposable) repository.getList(LinkModel.class)
                 .subscribeOn(Schedulers.io())
@@ -63,5 +71,20 @@ public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
                     }
                 })
         );
+    }*/
+
+    public static final String BASE_URL = "content://ben.com.linklauncher.linkprovider/link";
+
+    @Override
+    public void updateList() {
+        Cursor cursor = context.getContentResolver().query(Uri.parse(BASE_URL + "100"), null, null, null, null);
+
+    }
+
+    @Override
+    public void sendLink(LinkModel model) {
+        if (model != null) {
+            Objects.requireNonNull(context).sendBroadcast(LinkUtil.getRequest(model, App.SHOW_HISTORY_LINK));
+        }
     }
 }

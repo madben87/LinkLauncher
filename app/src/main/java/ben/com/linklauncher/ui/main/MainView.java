@@ -1,4 +1,6 @@
 package ben.com.linklauncher.ui.main;
 
-public interface MainView {
+import ben.com.linklauncher.core.MVPView;
+
+public interface MainView extends MVPView {
 }

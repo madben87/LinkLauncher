@@ -63,13 +63,13 @@ public class LinkContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
-        LinkModel model = RealmDBHelper.addLink(LinkUtil.modelFromContentValues(values));
+        long id = RealmDBHelper.addLink(LinkUtil.modelFromContentValues(values));
 
-        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
+        //LinkModel model = RealmDBHelper.addLink(LinkUtil.modelFromContentValues(values));
 
-        //Toast.makeText(getContext(), "LINK INSERT", Toast.LENGTH_SHORT).show();
+        //Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
 
-        return ContentUris.withAppendedId(uri, model.getId());
+        return ContentUris.withAppendedId(uri, /*model.getId()*/ id);
     }
 
     @Override

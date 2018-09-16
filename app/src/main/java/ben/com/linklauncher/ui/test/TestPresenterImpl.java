@@ -26,10 +26,7 @@ public class TestPresenterImpl implements TestPresenter<TestView> {
     @Override
     public void sendLink(LinkModel model) {
         if (model != null) {
-            //Intent intent = new Intent(App.SHOW_LINK);
-            //intent.putExtra(App.KEY_LINK, model/*.getLink()*/);
-            //intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-            Objects.requireNonNull(context).sendBroadcast(LinkUtil.getRequest(model));
+            Objects.requireNonNull(context).sendBroadcast(LinkUtil.getRequest(model, App.SHOW_LINK));
         }
     }
 

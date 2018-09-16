@@ -38,7 +38,7 @@ public class RealmRepositoryImpl implements RealmRepository<LinkModel> {
                 .flatMap(new Function<Class<? extends LinkModel>, Observable<? extends LinkModel>>() {
                     @Override
                     public Observable<? extends LinkModel> apply(Class<? extends LinkModel> aClass) throws Exception {
-                        return Observable.just(RealmDBHelper.addLink(model));
+                        return /*Observable.just(RealmDBHelper.addLink(model))*/null;
                     }
                 });
     }

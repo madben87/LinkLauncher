@@ -8,6 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -17,6 +22,7 @@ import ben.com.linklauncher.R;
 import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.ui.history.adapter.HistoryListAdapter;
+import ben.com.linklauncher.util.MessageEvent;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -35,7 +41,6 @@ public class HistoryFragment extends Fragment implements HistoryView {
     public HistoryFragment() {
 
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +61,8 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
         presenter.updateList();
 
+        EventBus.getDefault().register(this);
+
         return view;
     }
 
@@ -66,7 +73,16 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
     @Override
     public void showMessage(String str) {
+        Toast.makeText(this.getContext(), str, Toast.LENGTH_SHORT).show();
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        if (event.msg == MessageEvent.UPDATED_DB) {
+            presenter.updateList();
+        }else if (event.msg == MessageEvent.UPDATED_VIEW) {
+            presenter.updateList();
+        }
     }
 
     @Override
@@ -75,5 +91,6 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
         unbinder.unbind();
         presenter.detachView();
+        EventBus.getDefault().unregister(this);
     }
 }

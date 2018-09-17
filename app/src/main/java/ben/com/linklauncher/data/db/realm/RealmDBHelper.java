@@ -1,18 +1,16 @@
+/*
 package ben.com.linklauncher.data.db.realm;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-import java.util.Objects;
 
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.util.MessageEvent;
 import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 public class RealmDBHelper {
@@ -59,44 +57,33 @@ public class RealmDBHelper {
         return result;
     }
 
-    public static /*LinkModel*/ long addLink(final LinkModel model) {
+    public static */
+/*LinkModel*//*
+ long addLink(final LinkModel model) {
 
         Realm realm = Realm.getDefaultInstance();
 
         result = null;
 
         if (realm != null) {
-            /*realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(@NonNull Realm realm) {
-
-                    if (model != null) {
-                        LinkModel lm = realm.where(LinkModel.class).equalTo("id", model.getId()).findFirst();
-                        if (lm != null) {
-                            lm.setStatus(model.getStatus());
-                            //realm.beginTransaction();
-                            result = realm.copyFromRealm(realm.copyToRealmOrUpdate(lm));
-                            realm.commitTransaction();
-                            EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
-                        }else {
-                            //realm.beginTransaction();
-                            result = realm.copyFromRealm(realm.copyToRealm(model));
-                            realm.commitTransaction();
-                            EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
-                        }
-                    }
-                }
-            });*/
 
             if (model != null) {
                 LinkModel lm = realm.where(LinkModel.class).equalTo("id", model.getId()).findFirst();
                 realm.beginTransaction();
                 if (lm != null) {
                     lm.setStatus(model.getStatus());
-                    resultId = /*realm.copyFromRealm(*/realm.copyToRealmOrUpdate(lm).getId()/*)*/;
+                    resultId = */
+/*realm.copyFromRealm(*//*
+realm.copyToRealmOrUpdate(lm).getId()*/
+/*)*//*
+;
                     EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
                 }else {
-                    resultId = /*realm.copyFromRealm(*/realm.copyToRealmOrUpdate(model).getId()/*)*/;
+                    resultId = */
+/*realm.copyFromRealm(*//*
+realm.copyToRealmOrUpdate(model).getId()*/
+/*)*//*
+;
                     EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
                 }
                 realm.commitTransaction();
@@ -108,7 +95,7 @@ public class RealmDBHelper {
         return resultId;
     }
 
-    public static LinkModel updateLink(final LinkModel model) {
+    public static long updateLink(final LinkModel model) {
 
         Realm realm = Realm.getDefaultInstance();
 
@@ -124,7 +111,7 @@ public class RealmDBHelper {
                     if (lm != null) {
                         lm.setStatus(model.getStatus());
 
-                        result = realm.copyFromRealm(realm.copyToRealmOrUpdate(lm));
+                        resultId = realm.copyFromRealm(realm.copyToRealmOrUpdate(lm)).getId();
                         EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
                     }
                 }
@@ -133,7 +120,7 @@ public class RealmDBHelper {
             realm.close();
         }
 
-        return result;
+        return resultId;
     }
 
     public static boolean deleteLink(final LinkModel model) {
@@ -157,3 +144,4 @@ public class RealmDBHelper {
         return status;
     }
 }
+*/

@@ -10,22 +10,16 @@ import java.util.Objects;
 import javax.inject.Inject;
 
 import ben.com.linklauncher.core.App;
-import ben.com.linklauncher.data.db.Repository;
-import ben.com.linklauncher.data.db.realm.RealmRepository;
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.util.LinkUtil;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 
 public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
 
     private HistoryView view;
 
-    @Inject
-    Repository repository;
+    /*@Inject
+    Repository repository;*/
     @Inject
     Context context;
 
@@ -77,8 +71,11 @@ public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
 
     @Override
     public void updateList() {
-        Cursor cursor = context.getContentResolver().query(Uri.parse(BASE_URL + "100"), null, null, null, null);
-
+        Cursor cursor = context.getContentResolver().query(Uri.parse(BASE_URL), null, null, null, null);
+        if (cursor != null) {
+            List<LinkModel> list = LinkUtil.listModelFromCursor(cursor);
+            view.updateListView(list);
+        }
     }
 
     @Override

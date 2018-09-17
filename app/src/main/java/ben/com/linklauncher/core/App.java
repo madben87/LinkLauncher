@@ -27,13 +27,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+        appInstance = this;
+
         Realm.init(this);
 
         RealmConfiguration config = new RealmConfiguration.Builder().name("links.realm").build();
 
         Realm.setDefaultConfiguration(config);
-
-        appInstance = this;
 
         appInjector = DaggerAppInjector
                 .builder()

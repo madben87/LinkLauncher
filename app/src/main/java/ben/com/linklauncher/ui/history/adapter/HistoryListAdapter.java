@@ -6,19 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ben.com.linklauncher.R;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.inject.Inject;
 
+import ben.com.linklauncher.R;
 import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.core.ItemClick;
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.ui.history.HistoryPresenter;
-import ben.com.linklauncher.util.LinkUtil;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
 

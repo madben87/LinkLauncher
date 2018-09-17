@@ -13,6 +13,7 @@ import dagger.Component;
 @Component(modules = {ContextModule.class, RepositoryModule.class})
 public interface AppInjector {
 
-    void inject(HistoryPresenterImpl presenter);
+    void inject(LinkContentProvider provider);
     void inject(TestPresenterImpl presenter);
+    void inject(HistoryPresenterImpl presenter);
 }

@@ -13,13 +13,13 @@ public class PresenterModule {
 
     @Provides
     @ScreenScope
-    TestPresenter providesTestPresenter() {
+    public static TestPresenter providesTestPresenter() {
         return new TestPresenterImpl();
     }
 
     @Provides
     @ScreenScope
-    HistoryPresenter providesHistoryPresenter() {
+    public static HistoryPresenter providesHistoryPresenter() {
         return new HistoryPresenterImpl();
     }
 }

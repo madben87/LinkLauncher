@@ -7,31 +7,21 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.net.Uri;
-import android.widget.Toast;
 
-import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 import ben.com.linklauncher.core.App;
-import ben.com.linklauncher.data.db.Repository;
-import ben.com.linklauncher.data.db.realm.RealmDBHelper;
+import ben.com.linklauncher.data.db.realm.RealmRepository;
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.util.LinkUtil;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
-import io.realm.RealmQuery;
 
 public class LinkContentProvider extends ContentProvider {
 
     public static final String AUTHORITY = "ben.com.linklauncher.linkprovider";
     public static final String LINK_PATH = "link";
-    public static final Uri URI_LINK =  Uri.parse(
-            "content://" + AUTHORITY + "/" + LINK_PATH);
+
     static final int LINKS_URI = 100;
     static final int LINKS_URI_ID = 101;
 
@@ -44,7 +34,11 @@ public class LinkContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, LINK_PATH + "/#", LINKS_URI_ID);
     }
 
+    @Inject
+    RealmRepository<LinkModel> repository;
+
     public LinkContentProvider() {
+
     }
 
     @Override
@@ -63,18 +57,14 @@ public class LinkContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
-        long id = RealmDBHelper.addLink(LinkUtil.modelFromContentValues(values));
+        long id = repository.addItem(LinkUtil.modelFromContentValues(values));
 
-        //LinkModel model = RealmDBHelper.addLink(LinkUtil.modelFromContentValues(values));
-
-        //Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
-
-        return ContentUris.withAppendedId(uri, /*model.getId()*/ id);
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
     public boolean onCreate() {
-
+        App.getAppInjector().inject(this);
         return true;
     }
 
@@ -86,22 +76,17 @@ public class LinkContentProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case LINKS_URI:
-                for (LinkModel elem : RealmDBHelper.getLinksList()) {
+                for (LinkModel elem : repository.getItemsList()) {
                     Object[] rowData = new Object[] {elem.getId(), elem.getLink(), elem.getDate(), elem.getStatus()};
                     cursor.addRow(rowData);
                 }
                 break;
             case LINKS_URI_ID:
-                LinkModel model = RealmDBHelper.getLink(Long.parseLong(uri.getLastPathSegment()));
+                LinkModel model = repository.getItem(Long.parseLong(uri.getLastPathSegment()));
                 Object[] rowData = new Object[] {model.getId(), model.getLink(), model.getDate(), model.getStatus()};
                 cursor.addRow(rowData);
                 break;
         }
-
-        /*for (LinkModel elem : RealmDBHelper.getLinksList()) {
-            Object[] rowData = new Object[] {elem.getId(), elem.getLink(), elem.getDate(), elem.getStatus()};
-            cursor.addRow(rowData);
-        }*/
 
         return cursor;
     }
@@ -110,9 +95,9 @@ public class LinkContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
 
-        LinkModel model = RealmDBHelper.updateLink(LinkUtil.modelFromContentValues(values));
+        long id = repository.updateItem(LinkUtil.modelFromContentValues(values));
 
         Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
-        return (int) model.getId();
+        return (int) id;
     }
 }

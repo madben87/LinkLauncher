@@ -1,14 +1,12 @@
 package ben.com.linklauncher.ui.test;
 
 import android.content.Context;
-import android.content.Intent;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 import ben.com.linklauncher.core.App;
-import ben.com.linklauncher.data.db.Repository;
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.util.LinkUtil;
 

@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import ben.com.linklauncher.R;
-
 import ben.com.linklauncher.core.ItemClick;
 import butterknife.BindView;
 import butterknife.ButterKnife;

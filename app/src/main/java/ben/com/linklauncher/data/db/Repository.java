@@ -2,21 +2,15 @@ package ben.com.linklauncher.data.db;
 
 import java.util.List;
 
-import io.reactivex.Observable;
-
 public interface Repository<D> {
 
-    Observable<List<D>> getList(Class<D> cls);
+    List<D> getItemsList();
 
-    Observable<D> getItem(long id);
+    D getItem(long id);
 
-    Observable<D> addNewItem(D d);
+    long addItem(D item);
 
-    void addList(List<D> list);
+    long updateItem(D item);
 
-    Observable<D> updateItem(D d);
-
-    void updateList(List<D> list);
-
-    Observable<Boolean> removeItem(D d);
+    boolean deleteItem(D item);
 }

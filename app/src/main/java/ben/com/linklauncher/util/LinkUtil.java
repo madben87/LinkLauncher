@@ -3,7 +3,9 @@ package ben.com.linklauncher.util;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.MatrixCursor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.data.model.LinkModel;
@@ -70,10 +72,20 @@ public class LinkUtil {
         return model;
     }
 
-    public static LinkModel modelFromCursor(MatrixCursor cursor) {
+    public static List<LinkModel> listModelFromCursor(Cursor cursor) {
         final String[] columns = {"id", "link", "date", "status"};
         LinkModel model = new LinkModel();
+        List<LinkModel> list = new ArrayList<>();
         cursor.moveToFirst();
-        return model;
+
+        while (cursor.moveToNext()) {
+            model.setId(cursor.getLong(cursor.getColumnIndex(columns[0])));
+            model.setLink(cursor.getString(cursor.getColumnIndex(columns[1])));
+            model.setDate(cursor.getString(cursor.getColumnIndex(columns[2])));
+            model.setStatus(cursor.getInt(cursor.getColumnIndex(columns[3])));
+            list.add(model);
+        }
+
+        return list;
     }
 }

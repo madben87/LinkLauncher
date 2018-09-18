@@ -1,5 +1,6 @@
 package ben.com.linklauncher.ui.history.adapter;
 
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -15,6 +18,7 @@ import ben.com.linklauncher.R;
 import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.core.ItemClick;
 import ben.com.linklauncher.data.model.LinkModel;
+import ben.com.linklauncher.data.model.Status;
 import ben.com.linklauncher.ui.history.HistoryPresenter;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
@@ -23,6 +27,14 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
     HistoryPresenter presenter;
 
     private List<LinkModel> linkModelList;
+
+    private static final Map<Integer, Integer> colorMap = new HashMap<>();
+
+    static {
+        colorMap.put(Status.ACTIVE.getValue(), R.color.linkActive);
+        colorMap.put(Status.ERROR.getValue(), R.color.linkError);
+        colorMap.put(Status.UNKNOWN.getValue(), R.color.linkUnknown);
+    }
 
     public HistoryListAdapter() {
         linkModelList = new ArrayList<>();
@@ -44,13 +56,15 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
     @Override
     public void onBindViewHolder(@NonNull final HistoryHolder holder, int i) {
 
+        Resources res = App.getAppInstance().getResources();
+
         final LinkModel model = linkModelList.get(i);
 
         if (model != null) {
 
             holder.linkView.setText(model.getLink());
             holder.dateLinkView.setText(model.getDate());
-            holder.historyItem.setCardBackgroundColor(model.getStatus());
+            holder.historyItem.setCardBackgroundColor(res.getColor(colorMap.get(model.getStatus())));
 
             holder.setOnItemClickListener(new ItemClick() {
                 @Override

@@ -12,5 +12,5 @@ public interface Repository<D> {
 
     long updateItem(D item);
 
-    boolean deleteItem(D item);
+    long deleteItem(long id);
 }

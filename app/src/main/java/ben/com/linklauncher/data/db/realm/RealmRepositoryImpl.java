@@ -5,18 +5,19 @@ import android.support.annotation.NonNull;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Objects;
 
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.util.MessageEvent;
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 public class RealmRepositoryImpl implements RealmRepository<LinkModel> {
 
-    private static LinkModel result;
-    private static boolean status;
-    private static long resultId;
+    private LinkModel result;
+    private long resultId;
 
     @Override
     public List<LinkModel> getItemsList() {
@@ -109,23 +110,27 @@ public class RealmRepositoryImpl implements RealmRepository<LinkModel> {
     }
 
     @Override
-    public boolean deleteItem(final LinkModel item) {
+    public long deleteItem(final long id) {
         Realm realm = Realm.getDefaultInstance();
 
         if (realm != null) {
-            realm.executeTransaction(new Realm.Transaction() {
+            /*realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(@NonNull Realm realm) {
 
-                    RealmResults<LinkModel> realmResults = realm.where(LinkModel.class).equalTo("id", item.getId()).findAll();
-                    status = realmResults.deleteAllFromRealm();
-                    EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
+
                 }
-            });
+            });*/
+
+            RealmObject realmResults = realm.where(LinkModel.class).equalTo("id", id).findFirst();
+            realm.beginTransaction();
+            Objects.requireNonNull(realmResults).deleteFromRealm();
+            realm.commitTransaction();
+            EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_DB));
 
             realm.close();
         }
 
-        return status;
+        return id;
     }
 }

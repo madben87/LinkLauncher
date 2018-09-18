@@ -18,8 +18,6 @@ public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
 
     private HistoryView view;
 
-    /*@Inject
-    Repository repository;*/
     @Inject
     Context context;
 
@@ -40,32 +38,6 @@ public class HistoryPresenterImpl implements HistoryPresenter<HistoryView> {
         view = null;
         disposable.clear();
     }
-
-    /*@Override
-    public void updateList() {
-        disposable.add((Disposable) repository.getList(LinkModel.class)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<List<LinkModel>>() {
-                    @Override
-                    public void onNext(List<LinkModel> list) {
-                        if (list != null && list.size() > 0 && view != null) {
-                            view.updateListView(list);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                })
-        );
-    }*/
 
     public static final String BASE_URL = "content://ben.com.linklauncher.linkprovider/link";
 

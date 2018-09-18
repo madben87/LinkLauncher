@@ -37,14 +37,29 @@ public class LinkContentProvider extends ContentProvider {
     @Inject
     RealmRepository<LinkModel> repository;
 
-    public LinkContentProvider() {
-
+    @Override
+    public boolean onCreate() {
+        return true;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        //int id = 0;
+
+        String uriId = uri.getLastPathSegment();
+
+        /*switch (uriMatcher.match(uri)) {
+            case LINKS_URI:
+
+                break;
+            case LINKS_URI_ID:
+                String uriId = uri.getLastPathSegment();
+                id = (int) repository.deleteItem(Long.parseLong(uriId));
+                break;
+        }*/
+
+        return (int) repository.deleteItem(Long.parseLong(uriId));
     }
 
     @Override
@@ -57,20 +72,22 @@ public class LinkContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
 
+        if (repository == null) {
+            lazyInject();
+        }
+
         long id = repository.addItem(LinkUtil.modelFromContentValues(values));
 
         return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
-    public boolean onCreate() {
-        App.getAppInjector().inject(this);
-        return true;
-    }
-
-    @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
+
+        if (repository == null) {
+            lazyInject();
+        }
 
         MatrixCursor cursor = new MatrixCursor(columns);
 
@@ -95,9 +112,17 @@ public class LinkContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
 
+        if (repository == null) {
+            lazyInject();
+        }
+
         long id = repository.updateItem(LinkUtil.modelFromContentValues(values));
 
         Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         return (int) id;
+    }
+
+    private void lazyInject() {
+        App.getAppInjector().inject(this);
     }
 }

@@ -114,13 +114,6 @@ public class RealmRepositoryImpl implements RealmRepository<LinkModel> {
         Realm realm = Realm.getDefaultInstance();
 
         if (realm != null) {
-            /*realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(@NonNull Realm realm) {
-
-
-                }
-            });*/
 
             RealmObject realmResults = realm.where(LinkModel.class).equalTo("id", id).findFirst();
             realm.beginTransaction();

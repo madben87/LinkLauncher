@@ -74,11 +74,12 @@ public class LinkUtil {
 
     public static List<LinkModel> listModelFromCursor(Cursor cursor) {
         final String[] columns = {"id", "link", "date", "status"};
-        LinkModel model = new LinkModel();
+        LinkModel model;
         List<LinkModel> list = new ArrayList<>();
         cursor.moveToFirst();
 
         while (cursor.moveToNext()) {
+            model = new LinkModel();
             model.setId(cursor.getLong(cursor.getColumnIndex(columns[0])));
             model.setLink(cursor.getString(cursor.getColumnIndex(columns[1])));
             model.setDate(cursor.getString(cursor.getColumnIndex(columns[2])));

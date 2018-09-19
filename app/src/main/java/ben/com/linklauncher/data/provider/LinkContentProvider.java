@@ -45,19 +45,7 @@ public class LinkContentProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
 
-        //int id = 0;
-
         String uriId = uri.getLastPathSegment();
-
-        /*switch (uriMatcher.match(uri)) {
-            case LINKS_URI:
-
-                break;
-            case LINKS_URI_ID:
-                String uriId = uri.getLastPathSegment();
-                id = (int) repository.deleteItem(Long.parseLong(uriId));
-                break;
-        }*/
 
         return (int) repository.deleteItem(Long.parseLong(uriId));
     }

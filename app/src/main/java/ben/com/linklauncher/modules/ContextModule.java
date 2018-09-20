@@ -18,7 +18,7 @@ public class ContextModule {
 
     @Provides
     @Singleton
-    public static  Context providesContext() {
+    public static Context providesContext() {
         return context;
     }
 }

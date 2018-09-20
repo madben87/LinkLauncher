@@ -18,17 +18,6 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".receiver.LinkLauncherReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="ben.com.linklauncher.show_link_success" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
         <provider
             android:name=".data.provider.LinkContentProvider"
             android:authorities="ben.com.linklauncher.linkprovider"

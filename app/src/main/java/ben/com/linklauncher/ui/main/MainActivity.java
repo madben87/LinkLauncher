@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 
+import javax.inject.Inject;
+
 import ben.com.linklauncher.R;
+import ben.com.linklauncher.core.App;
 import ben.com.linklauncher.ui.history.HistoryFragment;
 import ben.com.linklauncher.ui.main.adapter.MainPagerAdapter;
 import ben.com.linklauncher.ui.test.TestFragment;
@@ -22,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.mainViewPager)
     ViewPager mainViewPager;
 
+    @Inject
+    MainPresenter presenter;
+
     private MainPagerAdapter pagerAdapter;
 
     @Override
@@ -31,13 +37,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         ButterKnife.bind(this);
 
+        App.getScreenInjector().inject(this);
+
+        presenter.attachView(this);
+
         pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
         pagerAdapter.addFragment(new TestFragment(), "Test");
         pagerAdapter.addFragment(new HistoryFragment(), "History");
         mainViewPager.setAdapter(pagerAdapter);
-        //mainViewPager.setCurrentItem(App.getAppInstance().getMainPageState());
-
-        //EventBus.getDefault().post(new MessageEvent(MessageEvent.UPDATED_VIEW));
     }
 
     @Override
@@ -54,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            showMessage("SORT LIST");
+            //showMessage("SORT LIST");
+            presenter.sortAction();
             return true;
         }
 
@@ -75,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.detachView();
     }
 
     @Override

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import ben.com.linklauncher.core.ItemClick;
 import ben.com.linklauncher.data.model.LinkModel;
 import ben.com.linklauncher.data.model.Status;
 import ben.com.linklauncher.ui.history.HistoryPresenter;
+import ben.com.linklauncher.util.SortLinkFactory;
 
 public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
 
@@ -27,6 +29,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
     HistoryPresenter presenter;
 
     private List<LinkModel> linkModelList;
+    private int defaultSortCriteria = 0;
 
     private static final Map<Integer, Integer> colorMap = new HashMap<>();
 
@@ -43,6 +46,18 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryHolder> {
 
     public void addItems(List<LinkModel> list) {
         this.linkModelList = list;
+        Collections.sort(linkModelList, SortLinkFactory.getSort(defaultSortCriteria));
+        notifyDataSetChanged();
+    }
+
+    public void sortItems() {
+
+        if (++defaultSortCriteria < SortLinkFactory.getCriteriaCount()) {
+            Collections.sort(linkModelList, SortLinkFactory.getSort(defaultSortCriteria));
+        }else {
+            defaultSortCriteria = 0;
+            Collections.sort(linkModelList, SortLinkFactory.getSort(defaultSortCriteria));
+        }
         notifyDataSetChanged();
     }
 

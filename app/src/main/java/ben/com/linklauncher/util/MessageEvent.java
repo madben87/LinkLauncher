@@ -4,6 +4,7 @@ public class MessageEvent {
 
     public static final int UPDATED_DB = 1;
     public static final int UPDATED_VIEW= 2;
+    public static final int SORT_HISTORY= 3;
 
     public final int msg;
 

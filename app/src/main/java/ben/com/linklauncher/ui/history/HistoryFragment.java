@@ -82,6 +82,8 @@ public class HistoryFragment extends Fragment implements HistoryView {
             presenter.updateList();
         }else if (event.msg == MessageEvent.UPDATED_VIEW) {
             presenter.updateList();
+        }else if (event.msg == MessageEvent.SORT_HISTORY) {
+            adapter.sortItems();
         }
     }
 

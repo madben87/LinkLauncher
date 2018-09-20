@@ -14,6 +14,8 @@ public class App extends Application {
     public static String SHOW_HISTORY_LINK = "ben.com.linklauncher.show_history_link";
     public static String SHOW_LINK_SUCCESS = "ben.com.linklauncher.show_link_success";
     public static String KEY_LINK = "link";
+    public static int SORT_BY_DATE = 1;
+    public static int SORT_BY_STATUS = 2;
 
     private static App appInstance;
     private AppInjector appInjector;
